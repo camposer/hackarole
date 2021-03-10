@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hackarole-secret
+data:
+  SDM_API_ACCESS_KEY: N/A
+  SDM_API_SECRET_KEY: N/A
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackarole
+spec:
+  selector:
+    matchLabels:
+      app: hackarole
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hackarole
+    spec:
+      containers:
+        - name: hackarole
+          image: 716086893020.dkr.ecr.us-west-2.amazonaws.com/rodo-eks-registry:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: hackarole-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackarole-service
+spec:
+  ports:
+  - port: 5000
+  selector:
+    app: hackarole
+  type: ClusterIP
