@@ -1,0 +1,35 @@
+---
+# Script for creating a k8s cluster (using fargate profiles) via eksctl
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: rodo-eks
+  region: us-west-2
+
+vpc:
+  subnets:
+    private:
+      us-west-2a: { id: subnet-XXXXXXXXXXXXXXXXX }
+      us-west-2b: { id: subnet-XXXXXXXXXXXXXXXXX }
+      us-west-2d: { id: subnet-XXXXXXXXXXXXXXXXX }
+    public:
+      us-west-2a: { id: subnet-XXXXXXXXXXXXXXXXX }
+      us-west-2b: { id: subnet-XXXXXXXXXXXXXXXXX }
+      us-west-2d: { id: subnet-XXXXXXXXXXXXXXXXX }
+
+nodeGroups:
+  - name: ng-1
+    instanceType: m5.large
+    desiredCapacity: 1
+
+fargateProfiles:
+  - name: fp-default
+    selectors:
+      # All workloads in the "default" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: default
+      # All workloads in the "kube-system" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: kube-system
+

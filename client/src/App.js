@@ -16,8 +16,7 @@ const defaultUsers = [
 function App() {
   const [status, setStatus] = useState('');
   const [users, setUsers] = useState(JSON.stringify(defaultUsers, null, 2));
-  // const baseUrl = 'http://localhost:5000'
-  const baseUrl = '';
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
 
   const sendData = () => {
     setStatus('');

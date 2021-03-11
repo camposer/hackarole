@@ -11,7 +11,6 @@ client = strongdm.Client(
 
 def save_user_resources(users: [model.User]):
     for user in users:
-        print(user)
         sdm_user = get_or_create_user(user)
         logging.info("User details %s", sdm_user)
     
